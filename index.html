@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Undian Berhadiah</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@1,700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      h1 {
+        font-family: "Comic Neue", cursive;
+        display: flex;
+        justify-content: center;
+        font-weight: bolder;
+      }
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        margin: 0 auto;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid black;
+      }
+      .box {
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        width: 10%;
+        height: 50px;
+        margin: 1%;
+        background-color: green;
+        border: 1px solid black;
+        border-radius: 10%;
+        cursor: pointer;
+      }
+      .box.clicked {
+        background-color: tomato;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Mangga Di Pilih Kotakna</h1>
+    <div class="container"></div>
+
+    <script>
+      const container = document.querySelector(".container");
+      const boxes = [];
+      const prizes = [
+        "Hadiah 1",
+        "Hadiah 2",
+        "Hadiah 3",
+        "Rp.2000,-",
+        "Hadiah 4",
+        "ZONK!",
+      ];
+      const prizesShown = new Set();
+
+      // Membuat kotak-kotak di dalam container
+      for (let i = 0; i <= 50; i++) {
+        const box = document.createElement("div");
+        box.classList.add("box");
+        box.setAttribute("data-index", i);
+        container.appendChild(box);
+        boxes.push(box);
+      }
+
+      // Fungsi untuk memilih hadiah atau ranjau secara acak
+      function getRandomPrize() {
+        let prize = prizes[Math.floor(Math.random() * prizes.length)];
+        if (
+          prize === "ZONK!" ||
+          prize === "Rp.2000,-" ||
+          !prizesShown.has(prize)
+        ) {
+          prizesShown.add(prize);
+          return prize;
+        }
+        return getRandomPrize();
+      }
+
+      // Fungsi untuk menampilkan hadiah atau ranjau setelah kotak diklik
+      function handleClick() {
+        const index = this.getAttribute("data-index");
+        const prize = getRandomPrize();
+        this.textContent = prize;
+        this.classList.add("clicked");
+
+        // Jika semua kotak sudah diklik, maka game berakhir
+        if (boxes.every((box) => box.textContent !== "")) {
+          alert("Game Selesai, Semoga harimu menyenangkan!");
+        }
+      }
+
+      // Menambahkan event listener untuk setiap kotak
+      boxes.forEach((box) => box.addEventListener("click", handleClick));
+    </script>
+  </body>
+</html>
